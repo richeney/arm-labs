@@ -16,7 +16,7 @@
         }
       },
       "metadata": {
-            "description": "Info for the hub vNet, which should already exist within the same subscription.  If specified then a vNet peering to the hub will be created."
+            "description": "Info for an existing hub or core vNet.  Required if peer==true.  Assumed to be within the same subscription."
       }
     },
     "spoke": {

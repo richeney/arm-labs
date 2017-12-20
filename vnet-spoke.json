@@ -3,12 +3,9 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "peer": {
-      "type": "string",
-      "allowedValues": [
-        "true",
-        "false"
-      ],
-      "defaultValue": "false"
+      "type": "bool",
+      "allowedValues": [ true, false ],
+      "defaultValue": false
     },
     "hub": {
       "type": "object",
@@ -40,8 +37,7 @@
     }
   },
   "variables": {
-    "peer": "[bool(parameters('peer'))]",
-    "hubID": "[if(variables('peer'), resourceId(parameters('hub').resourceGroup, 'Microsoft.Network/virtualNetworks/', parameters('hub').vnet.name), '')]",
+    "hubID": "[if(parameters('peer'), resourceId(parameters('hub').resourceGroup, 'Microsoft.Network/virtualNetworks/', parameters('hub').vnet.name), '')]",
     "spokeID": "[resourceId('Microsoft.Network/virtualNetworks/', parameters('spoke').vnet.name)]",
     "copy": [
         {
@@ -78,7 +74,7 @@
       }
     },
     {
-      "condition": "[variables('peer')]",
+      "condition": "[parameters('peer')]",
       "name": "[concat(parameters('spoke').vnet.name, '/to-', parameters('hub').vnet.name)]",
       "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
       "apiVersion": "2017-10-01",
@@ -97,7 +93,7 @@
       }
     },
     {
-      "condition": "[variables('peer')]",
+      "condition": "[parameters('peer')]",
       "name": "nestedTemplateForHubToSpokeVnetPeering",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
@@ -133,7 +129,7 @@
   "outputs": {
     "peer": {
       "type": "bool",
-      "value": "[variables('peer')]"
+      "value": "[parameters('peer')]"
     },
     "hubID": {
       "type": "string",

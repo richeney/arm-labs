@@ -30,9 +30,28 @@
     "createGateway": {
       "type": "bool",
       "defaultValue": true
+    },
+    "gatewaySku": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "VpnGw1",
+        "VpnGw2",
+        "VpnGw3"
+      ],
+      "metadata": {
+        "description": "The SKU of the VPN gateway."
+      }
     }
   },
-  "variables": {},
+  "variables": {
+    "gatewayName": "[concat(parameters('vnetName'), '-gateway')]",
+    "gatewayPublicIPName": "[concat(parameters('vnetName'), '-gateway-pip')]",
+    "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+    "gatewaySubnetId": "[concat(variables('vnetID'), '/subnets/GatewaySubnet')]",
+    "vpnType": "RouteBased"
+  },
   "resources": [
     {
       "name": "[parameters('vnetName')]",
@@ -54,7 +73,55 @@
           }
         }]
       }
+    },
+    {
+      "condition": "[parameters('createGateway')]",
+      "apiVersion": "2017-10-01",
+      "type": "Microsoft.Network/virtualNetworkGateways",
+      "name": "[variables('gatewayName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('gatewayPublicIPName'))]",
+        "[concat('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[variables('gatewaySubnetId')]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('gatewayPublicIPName'))]"
+              }
+            },
+            "name": "vnetGatewayConfig"
+          }
+        ],
+        "sku": {
+          "name": "[parameters('gatewaySku')]",
+          "tier": "[parameters('gatewaySku')]"
+        },
+        "gatewayType": "Vpn",
+        "vpnType": "[variables('vpnType')]",
+        "enableBgp": "false"
+      }
+    },
+    {
+      "apiVersion": "2017-10-01",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('gatewayPublicIPName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic"
+      }
     }
   ],
-  "outputs": {}
+  "outputs": {
+    "vpnGatewayIPAddress": {
+      "type": "object",
+      "value": "[reference(variables('gatewayPublicIPName'))]"
+    }
+  }
 }

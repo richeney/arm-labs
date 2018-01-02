@@ -1,0 +1,60 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vnetName": {
+      "type": "string",
+      "defaultValue": "core",
+      "metadata": {
+            "description": "Name for the vNet."
+      }
+    },
+    "vNetAddressPrefixes": {
+      "type": "array",
+      "defaultValue": [ "10.0.0.0/16" ],
+      "metadata": {
+        "description": "Array of IP address prefixes for the vNet address space.  There is usually only one prefix."
+      }
+    },
+    "subnets": {
+      "type": "array",
+      "defaultValue": [
+        { "name": "GatewaySubnet", "addressPrefix": "10.0.0.0/24" },
+        { "name": "outside", "addressPrefix": "10.0.1.0/24" },
+        { "name": "inside", "addressPrefix": "10.0.2.0/24" }
+        ],
+      "metadata": {
+        "description": "Array of the subnets. Must include GatewaySubnet if a VPN gateway is being created."
+      }
+    },
+    "createGateway": {
+      "type": "bool",
+      "defaultValue": true
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "name": "[parameters('vnetName')]",
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2017-10-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": "[parameters('vNetAddressPrefixes')]"
+        },
+        "copy": [{
+          "name": "subnets",
+          "count": "[length(parameters('subnets'))]",
+          "input": {
+            "name": "[parameters('subnets')[copyIndex('subnets')].name]",
+            "properties": {
+              "addressPrefix": "[parameters('subnets')[copyIndex('subnets')].addressPrefix]"
+            }
+          }
+        }]
+      }
+    }
+  ],
+  "outputs": {}
+}

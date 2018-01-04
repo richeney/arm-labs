@@ -64,7 +64,7 @@
               "value": "[parameters('hub').vnet.name]"
           },
           "vNetAddressPrefixes": {
-              "value": "[parameters('hub').vnet.addresPrefixes]"
+              "value": "[parameters('hub').vnet.addressPrefixes]"
           },
           "subnets": {
               "value": "[parameters('hub').subnets]"

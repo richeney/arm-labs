@@ -5,8 +5,8 @@
       "hub": {
           "type": "object",
           "defaultValue": {
-              "resourceGroup": "core",
-              "vnet": { "name": "core", "addressPrefixes": [ "10.0.0.0/16" ] },
+              "resourceGroup": "hub-core",
+              "vnet": { "name": "sharedCore", "addressPrefixes": [ "10.0.0.0/16" ] },
               "subnets": [
                   { "name": "GatewaySubnet", "addressPrefix": "10.0.0.0/24" },
                   { "name": "outside", "addressPrefix": "10.0.1.0/24" },

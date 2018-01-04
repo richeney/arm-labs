@@ -53,7 +53,7 @@
   },
   "resources": [
     {
-      "name": "hub",
+      "name": "hubDeployment",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "resourceGroup": "[parameters('hub').resourceGroup]",
@@ -91,6 +91,11 @@
       "spokeUrl": {
         "type": "string",
         "value": "[variables('spokeUrl')]"
-      }
+      },
+      "vpnGatewayIPAddress": {
+        "type": "string",
+        "value": "[reference('hubDeployment').outputs.vpnGatewayIPAddress.value]"
+    }
+
   }
 }

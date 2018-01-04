@@ -48,12 +48,18 @@
       }
   },
   "variables": {
+    "hubUrl": "[uri(deployment().properties.templateLink.uri, 'vnet-hub.json')]",
+    "spokeUrl": "[uri(deployment().properties.templateLink.uri, 'vnet-spoke.json')]"          
   },
   "resources": [],
   "outputs": {
-    "deployment": {
-      "type": "object",
-      "value": "[deployment()]"
-    }
+      "hubUrl": {
+        "type": "string",
+        "value": "[variables('hubUrl')]"
+      },
+      "spokeUrl": {
+        "type": "string",
+        "value": "[variables('spokeUrl')]"
+      }
   }
 }

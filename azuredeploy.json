@@ -84,14 +84,6 @@
     }
   ],
   "outputs": {
-      "hubUrl": {
-        "type": "string",
-        "value": "[variables('hubUrl')]"
-      },
-      "spokeUrl": {
-        "type": "string",
-        "value": "[variables('spokeUrl')]"
-      },
       "vpnGatewayIPAddress": {
         "type": "string",
         "value": "[reference('hubDeployment').outputs.vpnGatewayIPAddress.value]"

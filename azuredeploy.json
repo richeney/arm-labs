@@ -51,7 +51,38 @@
     "hubUrl": "[uri(deployment().properties.templateLink.uri, 'vnet-hub.json')]",
     "spokeUrl": "[uri(deployment().properties.templateLink.uri, 'vnet-spoke.json')]"          
   },
-  "resources": [],
+  "resources": [
+    {
+      "name": "hub",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "resourceGroup": "[parameters('hub').resourceGroup]",
+      "properties": {
+        "mode": "Incremental",
+        "parameters": {
+          "vnetName": {
+              "value": "[parameters('hub').vnet.name]"
+          },
+          "vNetAddressPrefixes": {
+              "value": "[parameters('hub').vnet.addresPrefixes]"
+          },
+          "subnets": {
+              "value": "[parameters('hub').subnets]"
+          },
+          "createGateway": {
+              "value": "[parameters('hub').createGateway]"
+          },
+          "gatewaySku": {
+              "value": "[parameters('hub').gatewqaySku]"
+          }
+        },
+        "templateLink": {
+          "uri": "[variables('hubUrl')]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    }
+  ],
   "outputs": {
       "hubUrl": {
         "type": "string",

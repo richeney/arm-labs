@@ -73,7 +73,7 @@
               "value": "[parameters('hub').createGateway]"
           },
           "gatewaySku": {
-              "value": "[parameters('hub').gatewqaySku]"
+              "value": "[parameters('hub').gatewaySku]"
           }
         },
         "templateLink": {

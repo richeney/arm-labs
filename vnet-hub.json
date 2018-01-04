@@ -119,7 +119,7 @@
     }
   ],
   "outputs": {
-    "vpnGatewayIPAddress": {
+    "vpnGatewayIpAddress": {
       "type": "string",
       "value": "[reference(variables('gatewayPublicIPName')).ipAddress]"
     }

@@ -87,9 +87,14 @@
         "type": "Microsoft.Resources/deployments",
         "apiVersion": "2017-05-10",
         "resourceGroup": "[parameters('spokes')[copyIndex()].resourceGroup]",
+        "dependsOn": [
+            "Microsoft.Resources/deployments/hubDeployment"
+        ],
         "copy": {
             "name": "spokecopy",
-            "count": "[length(parameters('spokes'))]"
+            "count": "[length(parameters('spokes'))]",
+            "mode": "Serial",
+            "batchSize": 1
         },
         "properties": {
           "mode": "Incremental",

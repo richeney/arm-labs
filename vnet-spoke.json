@@ -98,6 +98,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "resourceGroup": "[parameters('hub').resourceGroup]",
+      "dependsOn": [
+        "[variables('spokeID')]"
+      ],
       "properties": {
         "mode": "Incremental",
         "template": {

@@ -40,7 +40,7 @@
                     "resourceGroup": "dev",
                     "vnet": { "name": "dev", "addressPrefixes": [ "10.77.0.0/16" ] },
                     "subnets": [
-                        { "name": "dev", "addressPrefix": "10.76.0.0/16" }
+                        { "name": "dev", "addressPrefix": "10.77.0.0/16" }
                     ]
                 }
             ]

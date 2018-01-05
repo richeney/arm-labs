@@ -19,8 +19,8 @@
         "spokes": {
             "value": [
                 {
-                    "resourceGroup": "crm",
-                    "vnet": { "name": "crm", "addressPrefixes": [ "10.1.0.0/16"  ] },
+                    "resourceGroup": "erp",
+                    "vnet": { "name": "erp", "addressPrefixes": [ "10.1.0.0/16"  ] },
                     "subnets": [
                         { "name": "presentation", "addressPrefix": "10.1.0.0/24" },
                         { "name": "application", "addressPrefix": "10.1.1.0/24" },

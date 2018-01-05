@@ -47,7 +47,7 @@
   },
   "variables": {
     "gatewayName": "[concat(parameters('vnetName'), '-gateway')]",
-    "gatewayPublicIPName": "[concat(parameters('vnetName'), '-gateway-pip')]",
+    "gatewayPublicIpName": "[concat(parameters('vnetName'), '-gateway-pip')]",
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
     "gatewaySubnetId": "[concat(variables('vnetID'), '/subnets/GatewaySubnet')]",
     "vpnType": "RouteBased"
@@ -81,7 +81,7 @@
       "name": "[variables('gatewayName')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', variables('gatewayPublicIPName'))]",
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('gatewayPublicIpName'))]",
         "[concat('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]"
       ],
       "properties": {
@@ -93,7 +93,7 @@
                 "id": "[variables('gatewaySubnetId')]"
               },
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('gatewayPublicIPName'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('gatewayPublicIpName'))]"
               }
             },
             "name": "vnetGatewayConfig"
@@ -111,7 +111,7 @@
     {
       "apiVersion": "2017-10-01",
       "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[variables('gatewayPublicIPName')]",
+      "name": "[variables('gatewayPublicIpName')]",
       "location": "[resourceGroup().location]",
       "properties": {
         "publicIPAllocationMethod": "Dynamic"
@@ -121,7 +121,11 @@
   "outputs": {
     "vpnGatewayIpAddress": {
       "type": "string",
-      "value": "[reference(variables('gatewayPublicIPName')).ipAddress]"
+      "value": "[reference(variables('gatewayPublicIpName')).ipAddress]"
+    },
+    "pip": {
+      "type": "object",
+      "value": "[reference(variables('gatewayPublicIpName'))]"
     }
   }
 }

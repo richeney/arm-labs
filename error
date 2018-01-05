@@ -1,1 +1,0 @@
-"message": "The template output 'vpnGatewayIPAddress' is not valid: The language expression property 'ipAddress' doesn't exist, available properties are 'provisioningState, resourceGuid, publicIPAddressVersion, publicIPAllocationMethod, idleTimeoutInMinutes, ipTags'.."

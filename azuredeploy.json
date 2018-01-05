@@ -9,41 +9,39 @@
               "vnet": { "name": "core", "addressPrefixes": [ "10.0.0.0/16" ] },
               "subnets": [
                   { "name": "GatewaySubnet", "addressPrefix": "10.0.0.0/24" },
-                  { "name": "outside", "addressPrefix": "10.0.1.0/24" },
-                  { "name": "inside", "addressPrefix": "10.0.2.0/24" },
-                  { "name": "shared", "addressPrefix": "10.0.3.0/24" }
+                  { "name": "subnet1", "addressPrefix": "10.0.1.0/24" },
+                  { "name": "subnet2", "addressPrefix": "10.0.2.0/24" },
+                  { "name": "subnet3", "addressPrefix": "10.0.3.0/24" }
               ],
               "createGateway": true,
-              "gatewaySku": "VpnGw1"
+              "gatewaySku": "Basic"
           },
           "metadata": { 
-              "description": "Hub object.  See defaultValue for expected content example."
+              "description": "Hub object.  See defaultValue for example. The gatewaySku string is any of Basic|VpnGw1|VpnGw2|VpnGw3"
           }
       },
       "spokes": {
           "type": "array",
           "defaultValue": [
               {
-                  "resourceGroup": "spoke-crm",
-                  "vnet": { "name": "crm", "addressPrefixes": [ "10.1.0.0/16"  ] },
+                  "resourceGroup": "spoke1",
+                  "vnet": { "name": "spoke1", "addressPrefixes": [ "10.1.0.0/16"  ] },
                   "subnets": [
-                      { "name": "presentation", "addressPrefix": "10.1.0.0/24" },
-                      { "name": "application", "addressPrefix": "10.1.1.0/24" },
-                      { "name": "business", "addressPrefix": "10.1.2.0/24" },
-                      { "name": "data", "addressPrefix": "10.1.3.0/24" }
+                      { "name": "subnet1", "addressPrefix": "10.1.0.0/24" },
+                      { "name": "subnet2", "addressPrefix": "10.1.1.0/24" }
                   ]
               },
               {
-                  "resourceGroup": "spoke-test",
-                  "vnet": { "name": "test", "addressPrefixes": [ "10.76.0.0/16" ] },
+                  "resourceGroup": "spoke2",
+                  "vnet": { "name": "spoke2", "addressPrefixes": [ "10.2.0.0/16" ] },
                   "subnets": [
-                      { "name": "subnet1", "addressPrefix": "10.76.0.0/24" },
-                      { "name": "subnet2", "addressPrefix": "10.76.1.0/24" }
+                      { "name": "subnet1", "addressPrefix": "10.2.0.0/24" },
+                      { "name": "subnet2", "addressPrefix": "10.2.1.0/24" }
                   ]
               }
           ],
           "metadata": {
-              "description": "Array of spoke objects"
+              "description": "Array of spoke objects. See defaultValue for example."
           }
       }
   },

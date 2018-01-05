@@ -22,10 +22,10 @@ spokergs=$(jq --raw-output .spokes.value[].resourceGroup <<< $parameters)
 
 echo "Checking or creating resource groups:" >&2
 for rg in $hubrg $spokergs
-do az group create --location $loc --name $rg --output tsv --query name | sed 's/^/\* /1'
+do az group create --location $loc --name $rg --output tsv --query name | sed 's/^/- /1'
 done 
 
 echo "Deploying master template..." >&2
-vpnGatewayIpAddress=$(az group deployment create --resource-group $hubrg --template-uri $templateUri --query $query --output tsv --parameters "$parameters")
+vpnGatewayIpAddress=$(az group deployment create --resource-group $hubrg --template-uri $templateUri --query $query --output tsv --parameters "$parameters" --verbose)
 
 echo $vpnGatewayIpAddress

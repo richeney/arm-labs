@@ -95,11 +95,9 @@
             },
             "hub": {
                 "value": "[parameters('hub')]"
-                }
             },
             "spoke": {
                 "value": "[parameters('spokes')[copyIndex()]]"
-                }
             }
           },
           "templateLink": {

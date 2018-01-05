@@ -5,13 +5,13 @@ parameters="https://raw.githubusercontent.com/richeney/arm/master/azuredeploy.pa
 loc=westeurope
 query="properties.outputs.vpnGatewayIpAddress.value"
 
-rgs=$(curl $template | jq .parameters | grep -i resourceGroup | cut -f4 -d\")
-
-while read rg
-do
-  az group create --location $loc --name $rg
-  [[ -z $hubrg ]] && hubrg=$rg
-done <<< "$rgs"
+## rgs=$(curl $template | jq .parameters | grep -i resourceGroup | cut -f4 -d\")
+## 
+## while read rg
+## do
+  ## az group create --location $loc --name $rg
+  ## [[ -z $hubrg ]] && hubrg=$rg
+## done <<< "$rgs"
 
 [[ -z $hubrg ]] && hubrg=core
 

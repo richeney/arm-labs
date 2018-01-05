@@ -86,7 +86,11 @@
         "name": "[concat('spoke', copyIndex(1), 'Deployment')]",
         "type": "Microsoft.Resources/deployments",
         "apiVersion": "2017-05-10",
-        "resourceGroup": "[parameters('spoke')[copyIndex()].resourceGroup]",
+        "resourceGroup": "[parameters('spokes')[copyIndex()].resourceGroup]",
+        "copy": {
+            "name": "spokecopy",
+            "count": "[length(parameters('spokes'))]"
+        },
         "properties": {
           "mode": "Incremental",
           "parameters": {

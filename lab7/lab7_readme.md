@@ -1,4 +1,5 @@
-# arm
+# Lab7 Readme
+
 Azure Resource Manager JSON files
 
 See my workshop on https://azurecitadel.github.io/workshops/arm.  The files in this repository are referenced there and the workshop will help to explain some of the constructs and functions that are used. 
@@ -27,8 +28,3 @@ az group deployment create --resource-group $hubrg --template-uri $templateUri -
 ```
 
 There is also a deploy.sh script that runs in bash.  It requires both Azure CLI 2.0 and the jq utility for handling jmespath queries against JSON strings. I have used curl and jq to extract and query the parameters from the URI, and the parameters are passed inline as JSON to the deployment. It also determines the hub and spoke resource groups and creates them if required.  Feel free to make use of the script.
-
-Richard Cheney
-Cloud Solution Architect, Microsoft
-@RichCheneyAzure    
-

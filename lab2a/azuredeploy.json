@@ -1,0 +1,55 @@
+{
+    "parameters": {
+        "name": {
+            "type": "string"
+        }  
+    },
+    "variables": {
+        "hostingPlanName": "[concat(parameters('name'), '-plan')]",
+        "hostingEnvironment": "",
+        "location": "[resourceGroup().location]",
+        "sku": "Free",
+        "skuCode": "F1",
+        "workerSize": "0",
+        "serverFarmResourceGroup": "[resourceGroup().name]",
+        "subscriptionId": "[subscription().subscriptionId]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2016-03-01",
+            "name": "[parameters('name')]",
+            "type": "Microsoft.Web/sites",
+            "properties": {
+                "name": "[parameters('name')]",
+                "serverFarmId": "[concat('/subscriptions/', variables('subscriptionId'),'/resourcegroups/', variables('serverFarmResourceGroup'), '/providers/Microsoft.Web/serverfarms/', variables('hostingPlanName'))]",
+                "hostingEnvironment": "[variables('hostingEnvironment')]"
+            },
+            "location": "[variables('location')]",
+            "tags": {
+                "[concat('hidden-related:', '/subscriptions/', variables('subscriptionId'),'/resourcegroups/', variables('serverFarmResourceGroup'), '/providers/Microsoft.Web/serverfarms/', variables('hostingPlanName'))]": "empty"
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Web/serverfarms/', variables('hostingPlanName'))]"
+            ]
+        },
+        {
+            "apiVersion": "2016-09-01",
+            "name": "[variables('hostingPlanName')]",
+            "type": "Microsoft.Web/serverfarms",
+            "location": "[variables('location')]",
+            "properties": {
+                "name": "[variables('hostingPlanName')]",
+                "workerSizeId": "[variables('workerSize')]",
+                "reserved": false,
+                "numberOfWorkers": "1",
+                "hostingEnvironment": "[variables('hostingEnvironment')]"
+            },
+            "sku": {
+                "Tier": "[variables('sku')]",
+                "Name": "[variables('skuCode')]"
+            }
+        }
+    ],
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0"
+}

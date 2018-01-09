@@ -136,7 +136,7 @@
           "outputs": {
             "publicIp": {
               "type": "string",
-              "value": "[reference(variables('gatewayPublicIpName'))]"            }
+              "value": "[reference(variables('gatewayPublicIpName')).ipAddress]"            }
           }
         }
       }

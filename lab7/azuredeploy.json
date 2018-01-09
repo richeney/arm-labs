@@ -51,7 +51,7 @@
   },
   "resources": [
     {
-      "name": "[concat('hub', parameters('hub').vnet.name, 'Deployment']",
+      "name": "[concat('hub', parameters('hub').vnet.name, 'Deployment')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "resourceGroup": "[parameters('hub').resourceGroup]",
@@ -114,5 +114,10 @@
         }
       }
   ],
-  "outputs": {}
+  "outputs": {
+    "vpnGatewayIpAddress": {
+        "type": "string",
+        "value": "[reference(concat('hub', parameters('hub').vnet.name, 'Deployment')).outputs.gatewayPip.value]"
+    }
+  }
 }

@@ -48,7 +48,7 @@
   "variables": {
     "hubUrl": "[uri(deployment().properties.templateLink.uri, 'vnet-hub.json')]",
     "spokeUrl": "[uri(deployment().properties.templateLink.uri, 'vnet-spoke.json')]",
-    "hubDeploymentName": "[concat('hubDeployment-', parameters('hub').vnet.name)]"          
+    "hubDeploymentName": "[concat('deployHub-', parameters('hub').vnet.name)]"          
   },
   "resources": [
     {
@@ -82,7 +82,7 @@
       }
     },
     {
-        "name": "[concat('spoke', copyIndex(1), 'Deployment-', parameters('spokes')[copyIndex()].vnet.name)]",
+        "name": "[concat('deploySpoke', copyIndex(1), '-', parameters('spokes')[copyIndex()].vnet.name)]",
         "type": "Microsoft.Resources/deployments",
         "apiVersion": "2017-05-10",
         "resourceGroup": "[parameters('spokes')[copyIndex()].resourceGroup]",

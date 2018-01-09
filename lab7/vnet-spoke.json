@@ -53,7 +53,7 @@
   },
   "resources": [
     {
-      "name": "[concat('vnet-', parameters('spoke').vnet.name)]",
+      "name": "[concat(parameters('spoke').vnet.name)]",
       "type": "Microsoft.Network/virtualNetworks",
       "apiVersion": "2017-10-01",
       "location": "[resourceGroup().location]",
@@ -75,7 +75,7 @@
     },
     {
       "condition": "[parameters('peer')]",
-      "name": "[concat(parameters('spoke').vnet.name, '/to-', parameters('hub').vnet.name)]",
+      "name": "[concat(parameters('spoke').vnet.name, '/peering-to-', parameters('hub').vnet.name)]",
       "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
       "apiVersion": "2017-10-01",
       "location": "[resourceGroup().location]",
@@ -94,7 +94,7 @@
     },
     {
       "condition": "[parameters('peer')]",
-      "name": "[concat('nested-', parameters('hub').vnet.name, '-to-', parameters('spoke').vnet.name)]",
+      "name": "[concat('peer-', parameters('hub').vnet.name, '-to-', parameters('spoke').vnet.name)]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "resourceGroup": "[parameters('hub').resourceGroup]",
@@ -112,7 +112,7 @@
               {
                 "apiVersion": "2017-10-01",
                 "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
-                "name": "[concat(parameters('hub').vnet.name, '/to-', parameters('spoke').vnet.name)]",
+                "name": "[concat(parameters('hub').vnet.name, '/peering-to-', parameters('spoke').vnet.name)]",
                 "location": "[resourceGroup().location]",
                 "properties": {
                     "allowVirtualNetworkAccess": true,

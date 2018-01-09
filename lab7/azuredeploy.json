@@ -51,7 +51,7 @@
   },
   "resources": [
     {
-      "name": "hubDeployment",
+      "name": "[concat('hub', parameters('hub').vnet.name, 'Deployment']",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "resourceGroup": "[parameters('hub').resourceGroup]",
@@ -81,7 +81,7 @@
       }
     },
     {
-        "name": "[concat('spoke', copyIndex(1), 'Deployment')]",
+        "name": "[concat('spoke', copyIndex(1), '-', parameters('spokes')[copyIndex()].vnet.name, 'Deployment')]",
         "type": "Microsoft.Resources/deployments",
         "apiVersion": "2017-05-10",
         "resourceGroup": "[parameters('spokes')[copyIndex()].resourceGroup]",

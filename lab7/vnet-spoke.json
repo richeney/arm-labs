@@ -94,7 +94,7 @@
     },
     {
       "condition": "[parameters('peer')]",
-      "name": "nestedTemplateForHubToSpokeVnetPeering",
+      "name": "[concat(parameters('hub').vnet.name, '/to-', parameters('spoke').vnet.name)]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "resourceGroup": "[parameters('hub').resourceGroup]",

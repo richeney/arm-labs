@@ -47,11 +47,12 @@
   },
   "variables": {
     "hubUrl": "[uri(deployment().properties.templateLink.uri, 'vnet-hub.json')]",
-    "spokeUrl": "[uri(deployment().properties.templateLink.uri, 'vnet-spoke.json')]"          
+    "spokeUrl": "[uri(deployment().properties.templateLink.uri, 'vnet-spoke.json')]",
+    "hubDeploymentName": "[concat('hub', parameters('hub').vnet.name, 'Deployment')]"          
   },
   "resources": [
     {
-      "name": "[concat('hub', parameters('hub').vnet.name, 'Deployment')]",
+      "name": "[variables('hubDeploymentName')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "resourceGroup": "[parameters('hub').resourceGroup]",
@@ -86,7 +87,7 @@
         "apiVersion": "2017-05-10",
         "resourceGroup": "[parameters('spokes')[copyIndex()].resourceGroup]",
         "dependsOn": [
-            "Microsoft.Resources/deployments/hubDeployment"
+            "[concat('Microsoft.Resources/deployments/', variables('hubDeploymentName'))]"
         ],
         "copy": {
             "name": "spokecopy",
@@ -117,7 +118,7 @@
   "outputs": {
     "vpnGatewayIpAddress": {
         "type": "string",
-        "value": "[reference(concat('hub', parameters('hub').vnet.name, 'Deployment')).outputs.gatewayPip.value]"
+        "value": "[reference(variables('hubDeploymentName')).outputs.gatewayPip.value]"
     }
   }
 }

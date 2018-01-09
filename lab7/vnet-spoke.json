@@ -53,7 +53,7 @@
   },
   "resources": [
     {
-      "name": "[parameters('spoke').vnet.name]",
+      "name": "[concat('vnet-', parameters('spoke').vnet.name)]",
       "type": "Microsoft.Network/virtualNetworks",
       "apiVersion": "2017-10-01",
       "location": "[resourceGroup().location]",
@@ -94,7 +94,7 @@
     },
     {
       "condition": "[parameters('peer')]",
-      "name": "[concat('Nested-', parameters('hub').vnet.name, '-to-', parameters('spoke').vnet.name)]",
+      "name": "[concat('nested-', parameters('hub').vnet.name, '-to-', parameters('spoke').vnet.name)]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "resourceGroup": "[parameters('hub').resourceGroup]",

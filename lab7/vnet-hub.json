@@ -54,7 +54,7 @@
   },
   "resources": [
     {
-      "name": "[parameters('vnetName')]",
+      "name": "[concat('vnet-', parameters('vnetName'))]",
       "type": "Microsoft.Network/virtualNetworks",
       "apiVersion": "2017-10-01",
       "location": "[resourceGroup().location]",
@@ -76,9 +76,9 @@
     },
     {
       "condition": "[parameters('createGateway')]",
-      "apiVersion": "2017-10-01",
-      "type": "Microsoft.Network/virtualNetworkGateways",
       "name": "[variables('gatewayName')]",
+      "type": "Microsoft.Network/virtualNetworkGateways",
+      "apiVersion": "2017-10-01",
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('gatewayPublicIpName'))]",
@@ -109,9 +109,9 @@
       }
     },
     {
-      "apiVersion": "2017-10-01",
-      "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('gatewayPublicIpName')]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2017-10-01",
       "location": "[resourceGroup().location]",
       "properties": {
         "publicIPAllocationMethod": "Dynamic"

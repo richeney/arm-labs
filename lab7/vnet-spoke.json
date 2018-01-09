@@ -94,7 +94,7 @@
     },
     {
       "condition": "[parameters('peer')]",
-      "name": "[concat(parameters('hub').vnet.name, '-to-', parameters('spoke').vnet.name)]",
+      "name": "[concat('Nested:', parameters('hub').vnet.name, '-to-', parameters('spoke').vnet.name)]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2017-05-10",
       "resourceGroup": "[parameters('hub').resourceGroup]",
@@ -112,7 +112,7 @@
               {
                 "apiVersion": "2017-10-01",
                 "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
-                "name": "[concat('Nested-', parameters('hub').vnet.name, '-to-', parameters('spoke').vnet.name)]",
+                "name": "[concat(parameters('hub').vnet.name, '/to-', parameters('spoke').vnet.name)]",
                 "location": "[resourceGroup().location]",
                 "properties": {
                     "allowVirtualNetworkAccess": true,

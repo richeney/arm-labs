@@ -48,7 +48,7 @@
   "variables": {
     "hubUrl": "[uri(deployment().properties.templateLink.uri, 'vnet-hub.json')]",
     "spokeUrl": "[uri(deployment().properties.templateLink.uri, 'vnet-spoke.json')]",
-    "hubDeploymentName": "[concat('deployHub-', parameters('hub').vnet.name)]"          
+    "hubDeploymentName": "[concat('deployHub-', parameters('hub').vnet.name)]"
   },
   "resources": [
     {
@@ -116,9 +116,9 @@
       }
   ],
   "outputs": {
-    "vpnGatewayIpId": {
-        "type": "string",
-        "value": "[reference(variables('hubDeploymentName')).outputs.gatewayPipId.value]"
+    "vpnGatewayIp": {
+        "type": "object",
+        "value": "[reference(reference(variables('hubDeploymentName')).outputs.gatewayPipId.value)]"
     }
   }
 }

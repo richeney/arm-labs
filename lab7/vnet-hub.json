@@ -121,7 +121,7 @@
     }
   ],
   "outputs": {
-    "gatewayPip": {
+    "gatewayPipId": {
       "type": "string",
       "value": "[variables('gatewayPipId')]"      
     }

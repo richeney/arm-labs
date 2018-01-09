@@ -118,7 +118,7 @@
   "outputs": {
     "vpnGatewayIpAddress": {
         "type": "string",
-        "value": "[reference(variables('hubDeploymentName')).outputs.gatewayPip.value]"
+        "value": "[reference(variables('hubDeploymentName')).outputs.gatewayPipAddress.value]"
     }
   }
 }

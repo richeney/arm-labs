@@ -4,8 +4,8 @@
     "parameters": {
         "hub": {
             "value": {
-                "resourceGroup": "shared",
-                "vnet": { "name": "shared", "addressPrefixes": [ "10.0.0.0/16" ] },
+                "resourceGroup": "core",
+                "vnet": { "name": "core", "addressPrefixes": [ "10.0.0.0/16" ] },
                 "subnets": [
                     { "name": "GatewaySubnet", "addressPrefix": "10.0.0.0/24" },
                     { "name": "outside", "addressPrefix": "10.0.1.0/24" },

@@ -49,6 +49,7 @@
     "gatewayName": "[concat(parameters('vnetName'), '-gateway')]",
     "gatewayPublicIpName": "[concat(parameters('vnetName'), '-gateway-pip')]",
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+    "gatewayId": "[resourceId('Microsoft.Network/virtualNetworkGateways', variables('gatewayName'))]",
     "gatewaySubnetId": "[concat(variables('vnetID'), '/subnets/GatewaySubnet')]",
     "vpnType": "RouteBased"
   },
@@ -109,6 +110,7 @@
       }
     },
     {
+      "condition": "[parameters('createGateway')]",
       "name": "[variables('gatewayPublicIpName')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "apiVersion": "2017-10-01",
@@ -116,16 +118,34 @@
       "properties": {
         "publicIPAllocationMethod": "Dynamic"
       }
+    },
+    {
+      "condition": "[parameters('createGateway')]",
+      "name": "waitForPipAllocation",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "[variables('gatewayId')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [],
+          "outputs": {
+            "publicIp": {
+              "type": "string",
+              "value": "[reference(variables('gatewayPublicIpName'))]"            }
+          }
+        }
+      }
     }
   ],
   "outputs": {
     "gatewayPip": {
-      "type": "object",
-      "value": "[reference(variables('gatewayPublicIpName'))]"
-    },
-    "gateway": {
-      "type": "object",
-      "value": "[reference(variables('gatewayName'))]"
+      "type": "string",
+      "value": "[reference('waitForPipAllocation').outputs.publicIp.value]"      
     }
   }
 }

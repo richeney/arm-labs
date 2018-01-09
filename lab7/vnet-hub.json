@@ -116,14 +116,14 @@
       "apiVersion": "2017-10-01",
       "location": "[resourceGroup().location]",
       "properties": {
-        "publicIPAllocationMethod": "Dynamic"
+        "publicIPAllocationMethod": "Static"
       }
     }
   ],
   "outputs": {
-    "gatewayPipId": {
+    "gatewayPipAddress": {
       "type": "string",
-      "value": "[variables('gatewayPipId')]"      
+      "value": "[reference(variables('gatewayPublicIpName')).ipAddress]"    
     }
   }
 }

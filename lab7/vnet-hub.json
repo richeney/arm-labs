@@ -119,10 +119,6 @@
     }
   ],
   "outputs": {
-    "vpnGatewayIpAddress": {
-      "type": "string",
-      "value": "[reference(variables('gatewayPublicIpName')).ipAddress]"
-    },
     "pip": {
       "type": "object",
       "value": "[reference(variables('gatewayPublicIpName'))]"

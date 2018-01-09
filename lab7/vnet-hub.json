@@ -120,8 +120,12 @@
   ],
   "outputs": {
     "gatewayPip": {
-      "type": "string",
-      "value": "[reference(variables('gatewayPublicIpName')).ipAddress]"
+      "type": "object",
+      "value": "[reference(variables('gatewayPublicIpName'))]"
+    },
+    "gateway": {
+      "type": "object",
+      "value": "[reference(variables('gatewayName'))]"
     }
   }
 }

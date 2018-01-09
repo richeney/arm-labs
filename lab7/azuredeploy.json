@@ -114,11 +114,5 @@
         }
       }
   ],
-  "outputs": {
-      "vpnGatewayIpAddress": {
-        "type": "string",
-        "value": "[reference('hubDeployment').outputs.vpnGatewayIpAddress.value]"
-    }
-
-  }
+  "outputs": {}
 }

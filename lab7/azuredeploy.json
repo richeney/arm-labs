@@ -117,7 +117,7 @@
   ],
   "outputs": {
     "vpnGatewayPipId": {
-        "type": "object",
+        "type": "string",
         "value": "[reference(variables('hubDeploymentName')).outputs.gatewayPipId.value]"
     }
   }

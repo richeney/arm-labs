@@ -33,6 +33,7 @@ done
 # Deploy the ARM template into the hub resource group
 echo "Deploying master template..." >&2
 vpnGatewayPublicIpId=$(az group deployment create --resource-group $hubrg --template-uri $templateUri --query $query --output tsv --parameters "$parameters" --verbose)
+[[ -z $vpnGatewayPublicIpId ]] && error "Deployment issue. See resource manager error messages above."
 
 # The VPN gateway's public IP is dynamic, and so will not be allocated until the gateway itself is up and running
 # Once the deployment has cocompleted then we determine the address

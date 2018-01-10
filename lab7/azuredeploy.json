@@ -24,7 +24,7 @@
         },
         "numberOfDataDisks": {
            "type": "int",
-           "defaultValue": "1",
+           "defaultValue": 1,
            "metadata": {
                 "description": "Number of data disks (managed) to attach to the virtual machine."
             }

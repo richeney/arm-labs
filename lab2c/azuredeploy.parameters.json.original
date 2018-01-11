@@ -3,13 +3,13 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "adminUsername": {
-      "value": "richeney"
+      "value": "ghuser"
     },
     "adminPassword": {
-      "value": "ubuntuP4$$w0rd!"
+      "value": "GEN-PASSWORD"
     },
     "dnsLabelPrefix": {
-      "value": "richeneylab2c"
+      "value": "GEN-UNIQUE"
     }
   }
 }

@@ -18,8 +18,9 @@
          "type": "string",
          "metadata": {
               "description": "Name for the virtual machine"
-          }, 
-          "defaultValue": "myUbuntuVm"
+          },
+          "minLength": 1,
+          "maxLength": 64
       },
       "dnsLabelPrefix": {
         "type": "string",

@@ -1,4 +1,4 @@
-# Lab7 Readme
+# Nested Templates Readme
 
 Azure Resource Manager JSON files
 
@@ -21,7 +21,7 @@ If you are looking to customise the parameters then copy the azuredeploy.paramet
 ```json
 loc=westeurope
 hubrg=<yourHubResourceGroup>
-templateUri="https://raw.githubusercontent.com/richeney/arm/master/azuredeploy.json"
+templateUri="https://raw.githubusercontent.com/richeney/arm/master/nestedTemplates/azuredeploy.json"
 parametersFile=/path/to/your/azuredeploy.parameters.json
 
 az group deployment create --resource-group $hubrg --template-uri $templateUri --parameters "@$parametersFile"

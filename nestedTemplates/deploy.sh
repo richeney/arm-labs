@@ -6,8 +6,8 @@ error()
   exit 1
 }
 
-templateUri="https://raw.githubusercontent.com/richeney/arm/master/lab7/azuredeploy.json"
-parametersUri="https://raw.githubusercontent.com/richeney/arm/master/lab7/azuredeploy.parameters.json"
+templateUri="https://raw.githubusercontent.com/richeney/arm/master/nestedTemplates/azuredeploy.json"
+parametersUri="https://raw.githubusercontent.com/richeney/arm/master/nestedTemplates/azuredeploy.parameters.json"
 loc=westeurope
 query="properties.outputs.vpnGatewayPipId.value"
 

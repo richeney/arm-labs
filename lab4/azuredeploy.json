@@ -149,7 +149,7 @@
               "properties": {
                 "privateIPAllocationMethod": "Dynamic",
                 "publicIPAddress": {
-                  "id": "[[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
+                  "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
                 },
                 "subnet": {
                   "id": "[variables('subnetRef')]"

@@ -1,0 +1,51 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "collation": {
+            "type": "string"
+        },
+        "databaseName": {
+            "type": "string"
+        },
+        "edition": {
+            "type": "string"
+        },
+        "requestedServiceObjectiveId": {
+            "type": "string"
+        },
+        "maxSizeBytes": {
+            "type": "string"
+        },
+        "serverName": {
+            "type": "string"
+        },
+        "serverLocation": {
+            "type": "string"
+        },
+        "sampleName": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "zoneRedundant": {
+            "type": "bool",
+            "defaultValue": true
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Sql/servers/databases",
+            "apiVersion": "2014-04-01-preview",
+            "location": "[parameters('serverLocation')]",
+            "name": "[concat(parameters('serverName'), '/', parameters('databaseName'))]",
+            "properties": {
+                "collation": "[parameters('collation')]",
+                "edition": "[parameters('edition')]",
+                "maxSizeBytes": "[parameters('maxSizeBytes')]",
+                "requestedServiceObjectiveId": "[parameters('requestedServiceObjectiveId')]",
+                "sampleName": "[parameters('sampleName')]",
+                "zoneRedundant": "[parameters('zoneRedundant')]"
+            }
+        }
+    ]
+}

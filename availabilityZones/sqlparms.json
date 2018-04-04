@@ -1,0 +1,33 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "collation": {
+            "value": "SQL_Latin1_General_CP1_CI_AS"
+        },
+        "databaseName": {
+            "value": "zrsql"
+        },
+        "edition": {
+            "value": "Premium"
+        },
+        "maxSizeBytes": {
+            "value": "524288000"
+        },
+        "requestedServiceObjectiveId": {
+            "value": "7203483a-c4fb-4304-9e9f-17c71c904f5d"
+        },
+        "sampleName": {
+            "value": ""
+        },
+        "serverLocation": {
+            "value": "westeurope"
+        },
+        "serverName": {
+            "value": "richeneysql"
+        },
+        "zoneRedundant": {
+            "value": true
+        }
+    }
+}

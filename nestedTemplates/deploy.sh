@@ -24,7 +24,7 @@ parameters=$(curl --silent "$parametersUri?$(date +%s)" | jq .parameters)
 hubrg=$(jq --raw-output .hub.value.resourceGroup <<< $parameters)
 spokergs=$(jq --raw-output .spokes.value[].resourceGroup <<< $parameters)
 
-# Create the resource groups is they do not exist
+# Create the resource groups if they do not exist
 echo "Checking or creating resource groups:" >&2
 for rg in $hubrg $spokergs
 do az group create --location $loc --name $rg --output tsv --query name | sed 's/^/- /1'

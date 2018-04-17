@@ -83,7 +83,8 @@
     },
     "variables": {
         "keyVaultResourceGroup": "keyVaults",
-        "vmUri": "[uri(deployment().properties.templateLink.uri, 'vm.json')]"
+        "vmUri": "[uri(deployment().properties.templateLink.uri, 'vm.json')]",
+        "vmUri": "https://raw.githubusercontent.com/richeney/arm/master/lab7/vm.json"
     },
     "resources": [
         {

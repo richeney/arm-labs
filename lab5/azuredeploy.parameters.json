@@ -1,0 +1,23 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "adminUsername": {
+        "value": "richeney"
+      },
+      "adminPassword": {
+        "reference": {
+          "keyVault": {
+            "id": "/subscriptions/2d31be49-d959-4415-bb65-8aec2c90ba62/resourceGroups/keyVaults/providers/Microsoft.KeyVault/vaults/richeneyKeyVault"
+          },
+          "secretName": "ubuntuDefaultPassword"
+        }
+      },
+      "virtualNetworkName": {
+          "value": "ubuntuVnet"
+      },
+      "subnetName": {
+          "value": "ubuntuSubnet"
+      }
+    }
+  }

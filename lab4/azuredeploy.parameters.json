@@ -2,28 +2,22 @@
     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "vmName": {
-            "value": "myUbuntuVm"
-        },
-        "adminUsername": {
-            "value": "richeney"
-        },
-        "adminPassword": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/2ca40be1-7e80-4f2b-92f7-06b2123a68cc/resourceGroups/keyVaults/providers/Microsoft.KeyVault/vaults/richeneyKeyVault"
-                },
-                "secretName": "ubuntuDefaultPassword"
-            }
-        },
-        "virtualNetworkName": {
-            "value": "ubuntuVnet"
-        },
-        "subnetName": {
-            "value": "ubuntuSubnet"
-        },
-        "dnsLabelPrefix": {
-            "value": ""
+      "adminUsername": {
+        "value": "richeney"
+      },
+      "adminPassword": {
+        "reference": {
+          "keyVault": {
+            "id": "/subscriptions/2d31be49-d959-4415-bb65-8aec2c90ba62/resourceGroups/keyVaults/providers/Microsoft.KeyVault/vaults/richeneyKeyVault"
+          },
+          "secretName": "ubuntuDefaultPassword"
         }
+      },
+      "virtualNetworkName": {
+          "value": "ubuntuVnet"
+      },
+      "subnetName": {
+          "value": "ubuntuSubnet"
+      }
     }
-}
+  }

@@ -71,9 +71,14 @@
     "variables": {
       "vnetID": "[resourceId('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
       "subnetRef": "[concat(variables('vnetID'), '/subnets/', parameters('subnetName'))]",
-      "nicName": "[concat(parameters('vmName'), '-nic')]",
-      "pipName": "[concat(parameters('vmName'), '-pip')]",
-      "pipType": "Dynamic",
+      "publicIPAddressName": "[concat(parameters('vmName'), '-pip')]",
+      "publicIPAddressType": "Dynamic",
+      "nicType": "[if(greater(length(parameters('dnsLabelPrefix')), 0), 'public', 'private')]",
+      "privateNicName": "[concat(parameters('vmName'), '-nic')]",
+      "publicNicName": "[concat(parameters('vmName'), '-nic-public')]",
+      "privateNicID": "[resourceId('Microsoft.Network/networkInterfaces/', variables('privateNicName'))]",
+      "publicNicID": "[resourceId('Microsoft.Network/networkInterfaces/', variables('publicNicName'))]",
+      "nicId": "[if(equals(variables('nicType'), 'private'), variables('privateNicID'), variables('publicNicID'))]",
       "vmSize": "Standard_B1s",
       "imagePublisher": "Canonical",
       "imageOffer": "UbuntuServer",
@@ -94,12 +99,13 @@
         "properties": {}
       },
       {
+        "condition": "[equals(variables('nicType'), 'public')]",
         "apiVersion": "2017-04-01",
         "type": "Microsoft.Network/publicIPAddresses",
-        "name": "[variables('pipName')]",
+        "name": "[variables('publicIPAddressName')]",
         "location": "[resourceGroup().location]",
         "properties": {
-          "publicIPAllocationMethod": "[variables('pipType')]",
+          "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
           "dnsSettings": {
             "domainNameLabel": "[parameters('dnsLabelPrefix')]"
           }
@@ -127,12 +133,13 @@
         }
       },
       {
+        "condition": "[equals(variables('nicType'), 'public')]",
         "apiVersion": "2017-04-01",
         "type": "Microsoft.Network/networkInterfaces",
-        "name": "[variables('nicName')]",
+        "name": "[variables('publicNicName')]",
         "location": "[resourceGroup().location]",
         "dependsOn": [
-          "[resourceId('Microsoft.Network/publicIPAddresses/', variables('pipName'))]",
+          "[resourceId('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
           "[variables('vnetID')]"
         ],
         "properties": {
@@ -142,8 +149,31 @@
               "properties": {
                 "privateIPAllocationMethod": "Dynamic",
                 "publicIPAddress": {
-                  "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('pipName'))]"
+                  "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
                 },
+                "subnet": {
+                  "id": "[variables('subnetRef')]"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "condition": "[equals(variables('nicType'), 'private')]",
+        "apiVersion": "2017-04-01",
+        "type": "Microsoft.Network/networkInterfaces",
+        "name": "[variables('privateNicName')]",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+          "[variables('vnetID')]"
+        ],
+        "properties": {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig1",
+              "properties": {
+                "privateIPAllocationMethod": "Dynamic",
                 "subnet": {
                   "id": "[variables('subnetRef')]"
                 }
@@ -158,8 +188,8 @@
         "name": "[parameters('vmName')]",
         "location": "[resourceGroup().location]",
         "dependsOn": [
-          "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
-          "[resourceId('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+          "[variables('storageAccountID')]",
+          "[variables('nicId')]"
         ],
         "properties": {
           "hardwareProfile": {
@@ -191,7 +221,7 @@
           "networkProfile": {
             "networkInterfaces": [
               {
-                "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+                "id": "[variables('nicId')]"
               }
             ]
           },
@@ -205,13 +235,5 @@
       }
     ],
     "outputs": {
-      "hostname": {
-        "type": "string",
-        "value": "[reference(variables('pipName')).dnsSettings.fqdn]"
-      },
-      "sshCommand": {
-        "type": "string",
-        "value": "[concat('ssh ', parameters('adminUsername'), '@', reference(variables('pipName')).dnsSettings.fqdn)]"
-      }
     }
   }

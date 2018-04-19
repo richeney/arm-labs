@@ -77,7 +77,7 @@
         }
     },
     "variables": {
-        "pip?": "[if(greater(length(parameters('dnsLabelPrefix')), 0), bool('true'), bool('false'))]",
+        "pip?": "[if(empty(parameters('dnsLabelPrefix')), bool('false'), bool('true'))]",
         "pipObject": {
             "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('pipName'))]"
         },

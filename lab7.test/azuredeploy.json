@@ -35,7 +35,7 @@
             "defaultValue": {
                 "resourceGroup": "keyVaults",
                 "name": "richeneyKeyVault",
-                "secret": "defaultUbuntuPassword"
+                "secret": "ubuntuDefaultPassword"
             }
         }
     },

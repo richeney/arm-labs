@@ -46,7 +46,7 @@
     "resources": [
         {
             "apiVersion": "2017-05-10",
-            "name": "linkedTemplate",
+            "name": "[parameters('vm')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
                 "mode": "Incremental",

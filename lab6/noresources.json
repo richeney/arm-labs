@@ -1,0 +1,77 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "peer": {
+            "type": "bool",
+            "allowedValues": [
+                true,
+                false
+            ],
+            "defaultValue": false
+        },
+        "hub": {
+            "type": "object",
+            "defaultValue": {
+                "resourceGroup": "core",
+                "vnet": {
+                    "name": "core"
+                }
+            },
+            "metadata": {
+                "description": "Info for an existing hub or core vNet.  Required if peer==true.  Assumed to be within the same subscription."
+            }
+        },
+        "spoke": {
+            "type": "object",
+            "defaultValue": {
+                "vnet": {
+                    "name": "Spoke",
+                    "addressPrefixes": [
+                        "10.99.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "subnet1",
+                        "addressPrefix": "10.99.0.0/24"
+                    },
+                    {
+                        "name": "subnet2",
+                        "addressPrefix": "10.99.1.0/24"
+                    }
+                ]
+            },
+            "metadata": {
+                "description": "Complex object containing information for the spoke vNet.  See defaultValue for example."
+            }
+        }
+    },
+    "variables": {
+        "description": "[if(parameters('peer'), concat('Peering new ', parameters('spoke').vnet.name, ' vNet with ', parameters('hub').vnet.name), concat('Creating ', parameters('spoke').vnet.name, ' vNet without a peering connection'))]"
+    },
+    "resources": [],
+    "outputs": {
+        "boolean": {
+            "type": "bool",
+            "value": "[parameters('peer')]"
+        },
+        "array": {
+            "type": "array",
+            "value": "[parameters('spoke').subnets]"
+        },
+        "object": {
+            "type": "object",
+            "value": "[parameters('hub')]"
+        },
+        "numberOfSubnets": {
+            "type": "int",
+            "value": "[length(parameters('spoke').subnets)]"
+        },
+        "What are we doing?": {
+            "type": "string",
+            "value": "[variables('description')]"
+        }
+
+    }
+}

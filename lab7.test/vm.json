@@ -144,7 +144,7 @@
                         "version": "latest"
                     },
                     "osDisk": {
-                        "name": "[concat(parameters('vm'.name), '-OS')]",
+                        "name": "[concat(parameters('vm').name, '-OS')]",
                         "createOption": "FromImage"
                     },
                     "copy": [

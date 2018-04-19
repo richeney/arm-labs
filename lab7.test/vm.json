@@ -1,0 +1,180 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vm": {
+            "type": "object",
+            "defaultValue": {
+                "name": "myUbuntuVM",
+                "dns": "",
+                "ubuntuVersion": "16.04.0-LTS",
+                "numberOfDataDisks": 2
+            }
+        },
+        "vnet": {
+            "type": "object",
+            "defaultValue": {
+                "name": "HugoAndCat",
+                "prefix": [
+                    "10.0.0.0/16"
+                ],
+                "subnets": [
+                    {
+                        "name": "production",
+                        "prefix": "10.0.0.0/24"
+                    }
+                ]
+            }
+        },
+        "adminUser": {
+            "type": "string",
+            "defaultValue": "richeney"
+        },
+        "adminPassword": {
+            "type": "securestring"
+        }
+    },
+    "variables": {
+        "pip?": "[if(empty(parameters('vm').dns), bool('false'), bool('true'))]",
+        "storageAccountName": "[concat('bootdiags', uniquestring(resourceGroup().id))]",
+        "imagePublisher": "Canonical",
+        "imageOffer": "UbuntuServer",
+        "storageAccountType": "Standard_LRS",
+        "nicName": "[concat(parameters('vm').name, '-nic')]",
+        "pipName": "[concat(parameters('vm').name, '-pip')]",
+        "pipType": "Dynamic",
+        "pipObject": {
+            "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('pipName'))]"
+        },
+        "vmSize": "Standard_B1s",
+        "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('vnet').name)]",
+        "subnetRef": "[concat(variables('vnetID'),'/subnets/',parameters('vnet').subnets[0].name)]"
+    },
+    "resources": [
+        {
+            "name": "[variables('storageAccountName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2017-06-01",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "[variables('storageAccountType')]"
+            },
+            "kind": "Storage",
+            "properties": {}
+        },
+        {
+            "condition": "[variables('pip?')]",
+            "name": "[variables('pipName')]",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2017-06-01",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "publicIPAllocationMethod": "[variables('pipType')]",
+                "dnsSettings": {
+                    "domainNameLabel": "[parameters('vm').dns]"
+                }
+            }
+        },
+        {
+            "name": "[parameters('vnet').name]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2017-06-01",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": "[parameters('vnet').prefix]"
+                },
+                "subnets": [
+                    {
+                        "name": "[parameters('vnet').subnets[0].name]",
+                        "properties": {
+                            "addressPrefix": "[parameters('vnet').subnets[0].prefix]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[variables('nicName')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2017-06-01",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses/', variables('pipName'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/', parameters('vnet').name)]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": "[if(variables('pip?'), variables('pipObject'), json('null'))]",
+                            "subnet": {
+                                "id": "[variables('subnetRef')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2017-12-01",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('vm').name]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[variables('vmSize')]"
+                },
+                "osProfile": {
+                    "computerName": "[parameters('vm').name]",
+                    "adminUsername": "[parameters('adminUser')]",
+                    "adminPassword": "[parameters('adminPassword')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[variables('imagePublisher')]",
+                        "offer": "[variables('imageOffer')]",
+                        "sku": "[parameters('vm').ubuntuVersion]",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "[concat(parameters('vm'.name), '-OS')]",
+                        "createOption": "FromImage"
+                    },
+                    "copy": [
+                        {
+                            "name": "dataDisks",
+                            "count": "[parameters('vm').numberofDataDisks]",
+                            "input": {
+                                "name": "[concat(parameters('vm').name, '-Data', padLeft(copyIndex('dataDisks'), 2, '0'))]",
+                                "lun": "[copyIndex('dataDisks')]",
+                                "diskSizeGB": 1023,
+                                "createOption": "Empty"
+                            }
+                        }
+                    ]
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName')), '2016-01-01').primaryEndpoints.blob)]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

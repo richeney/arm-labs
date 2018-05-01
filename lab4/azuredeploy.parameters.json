@@ -13,7 +13,7 @@
           "secretName": "ubuntuDefaultPassword"
         }
       },
-      "virtualNetworkName": {
+      "vnetName": {
           "value": "ubuntuVnet"
       },
       "subnetName": {

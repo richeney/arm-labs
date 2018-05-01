@@ -40,13 +40,13 @@
           "description": "The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version."
         }
       },
-      "virtualNetworkName": {
+      "vnetName": {
          "type": "string",
          "metadata": {
               "description": "Name for the virtual network"
           }
       },
-      "virtualNetworkPrefix": {
+      "vnetPrefix": {
          "type": "string",
          "defaultValue": "10.0.0.0/16",
          "metadata": {
@@ -69,7 +69,7 @@
       }
     },
     "variables": {
-      "vnetID": "[resourceId('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
+      "vnetID": "[resourceId('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]",
       "subnetRef": "[concat(variables('vnetID'), '/subnets/', parameters('subnetName'))]",
       "nicName": "[concat(parameters('vmName'), '-nic')]",
       "pipName": "[concat(parameters('vmName'), '-pip')]",
@@ -78,8 +78,7 @@
       "imagePublisher": "Canonical",
       "imageOffer": "UbuntuServer",
       "storageAccountType": "Standard_LRS",
-      "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'salinuxvm')]",
-      "storageAccountID": "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]"
+      "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'salinuxvm')]"
     },
     "resources": [
       {
@@ -94,7 +93,7 @@
         "properties": {}
       },
       {
-        "apiVersion": "2017-04-01",
+        "apiVersion": "2017-06-01",
         "type": "Microsoft.Network/publicIPAddresses",
         "name": "[variables('pipName')]",
         "location": "[resourceGroup().location]",
@@ -106,14 +105,14 @@
         }
       },
       {
-        "apiVersion": "2017-04-01",
+        "apiVersion": "2017-06-01",
         "type": "Microsoft.Network/virtualNetworks",
-        "name": "[parameters('virtualNetworkName')]",
+        "name": "[parameters('vnetName')]",
         "location": "[resourceGroup().location]",
         "properties": {
           "addressSpace": {
             "addressPrefixes": [
-              "[parameters('virtualNetworkPrefix')]"
+              "[parameters('vnetPrefix')]"
             ]
           },
           "subnets": [
@@ -127,7 +126,7 @@
         }
       },
       {
-        "apiVersion": "2017-04-01",
+        "apiVersion": "2017-06-01",
         "type": "Microsoft.Network/networkInterfaces",
         "name": "[variables('nicName')]",
         "location": "[resourceGroup().location]",

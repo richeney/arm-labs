@@ -8,12 +8,12 @@
       "adminPassword": {
         "reference": {
           "keyVault": {
-            "id": "/subscriptions/2d31be49-d999-4415-bb65-8aec2c90ba62/resourceGroups/keyVaults/providers/Microsoft.KeyVault/vaults/richeneyKeyVault"
+            "id": "/subscriptions/2d31be49-d959-4415-bb65-8aec2c90ba62/resourceGroups/keyVaults/providers/Microsoft.KeyVault/vaults/richeneyKeyVault"
           },
           "secretName": "ubuntuDefaultPassword"
         }
       },
-      "virtualNetworkName": {
+      "vnetName": {
           "value": "ubuntuVnet"
       },
       "subnetName": {

@@ -53,13 +53,13 @@
             "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
           }
         },
-        "virtualNetworkName": {
+        "vnetName": {
            "type": "string",
            "metadata": {
                 "description": "Name for the virtual network"
             }
         },
-        "virtualNetworkPrefix": {
+        "vnetPrefix": {
            "type": "string",
            "defaultValue": "10.0.0.0/16",
            "metadata": {
@@ -83,7 +83,7 @@
     },
     "variables": {
         "keyVaultResourceGroup": "keyVaults",
-        "vmUri": "[uri(deployment().properties.templateLink.uri, 'vm.json')]",
+        "derivedUri": "Add square brackets around: uri(deployment().properties.templateLink.uri, 'vm.json') ",
         "vmUri": "https://raw.githubusercontent.com/richeney/arm/master/lab7/vm.json"
     },
     "resources": [
@@ -114,11 +114,11 @@
                             "secretName": "[parameters('secretName')]"
                         }
                     },
-                    "virtualNetworkName": {
-                        "value": "[parameters('virtualNetworkName')]"
+                    "vnetName": {
+                        "value": "[parameters('vnetName')]"
                     },
-                    "virtualNetworkPrefix": {
-                        "value": "[parameters('virtualNetworkPrefix')]"
+                    "vnetPrefix": {
+                        "value": "[parameters('vnetPrefix')]"
                     },
                     "subnetName": {
                         "value": "[parameters('subnetName')]"

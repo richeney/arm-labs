@@ -14,7 +14,7 @@
       "secretName": {
         "value": "ubuntuDefaultPassword"
       },
-      "virtualNetworkName": {
+      "vnetName": {
           "value": "ubuntuVnet"
       },
       "subnetName": {

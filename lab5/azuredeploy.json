@@ -44,17 +44,18 @@
         "numberOfDataDisks": {
            "type": "int",
            "defaultValue": 1,
+           "maxValue": 2,
            "metadata": {
                 "description": "Number of data disks for the virtual machine"
             }
         },
-        "virtualNetworkName": {
+        "vnetName": {
             "type": "string",
             "metadata": {
                 "description": "Name for the virtual network"
             }
         },
-        "virtualNetworkPrefix": {
+        "vnetPrefix": {
             "type": "string",
             "defaultValue": "10.0.0.0/16",
             "metadata": {
@@ -81,7 +82,7 @@
         "pipObject": {
             "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('pipName'))]"
         },
-        "vnetID": "[resourceId('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
+        "vnetID": "[resourceId('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]",
         "subnetRef": "[concat(variables('vnetID'), '/subnets/', parameters('subnetName'))]",
         "nicName": "[concat(parameters('vmName'), '-nic')]",
         "pipName": "[concat(parameters('vmName'), '-pip')]",
@@ -90,8 +91,7 @@
         "imagePublisher": "Canonical",
         "imageOffer": "UbuntuServer",
         "storageAccountType": "Standard_LRS",
-        "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'salinuxvm')]",
-        "storageAccountID": "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]"
+        "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'salinuxvm')]"
     },
     "resources": [
         {
@@ -109,7 +109,7 @@
             "condition": "[variables('pip?')]",
             "name": "[variables('pipName')]",
             "type": "Microsoft.Network/publicIPAddresses",
-            "apiVersion": "2017-04-01",
+            "apiVersion": "2017-06-01",
             "location": "[resourceGroup().location]",
             "properties": {
                 "publicIPAllocationMethod": "[variables('pipType')]",
@@ -119,14 +119,14 @@
             }
         },
         {
-            "name": "[parameters('virtualNetworkName')]",
+            "name": "[parameters('vnetName')]",
             "type": "Microsoft.Network/virtualNetworks",
-            "apiVersion": "2017-04-01",
+            "apiVersion": "2017-06-01",
             "location": "[resourceGroup().location]",
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
-                        "[parameters('virtualNetworkPrefix')]"
+                        "[parameters('vnetPrefix')]"
                     ]
                 },
                 "subnets": [
@@ -142,7 +142,7 @@
         {
             "name": "[variables('nicName')]",
             "type": "Microsoft.Network/networkInterfaces",
-            "apiVersion": "2017-04-01",
+            "apiVersion": "2017-06-01",
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/publicIPAddresses/', variables('pipName'))]",
@@ -189,6 +189,7 @@
                         "version": "latest"
                     },
                     "osDisk": {
+                        "name": "[concat(parameters('vmName'), '-osDisk')]",
                         "createOption": "FromImage"
                     },
                     "copy": [
@@ -196,9 +197,10 @@
                             "name": "dataDisks",
                             "count": "[parameters('numberofDataDisks')]",
                             "input": {
-                                "diskSizeGB": 1023,
+                                "name": "[concat(parameters('vmName'), '-dataDisk', padLeft(copyIndex('dataDisks'), 2, '0'))]",
                                 "lun": "[copyIndex('dataDisks')]",
-                                "createOption": "Empty"
+                                "createOption": "Empty",
+                                "diskSizeGB": 1023
                             }
                         }
                     ]

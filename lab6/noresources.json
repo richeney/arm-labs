@@ -15,7 +15,7 @@
             "defaultValue": {
                 "resourceGroup": "core",
                 "vnet": {
-                    "name": "core"
+                    "name": "Core"
                 }
             },
             "metadata": {
@@ -48,13 +48,18 @@
         }
     },
     "variables": {
-        "description": "[if(parameters('peer'), concat('Peering new ', parameters('spoke').vnet.name, ' vNet with ', parameters('hub').vnet.name), concat('Creating ', parameters('spoke').vnet.name, ' vNet without a peering connection'))]"
+        "trueDesc": "[concat('Peering new ', parameters('spoke').vnet.name, ' vnet to ', parameters('hub').vnet.name)]",
+        "falseDesc": "[concat('Creating ', parameters('spoke').vnet.name, ' vNet without a peering connection')]"
     },
     "resources": [],
     "outputs": {
         "boolean": {
             "type": "bool",
             "value": "[parameters('peer')]"
+        },
+        "string": {
+            "type": "string",
+            "value": "[parameters('spoke').vnet.name]"
         },
         "array": {
             "type": "array",
@@ -64,14 +69,13 @@
             "type": "object",
             "value": "[parameters('hub')]"
         },
-        "numberOfSubnets": {
+        "integer": {
             "type": "int",
             "value": "[length(parameters('spoke').subnets)]"
         },
-        "What are we doing?": {
+        "description": {
             "type": "string",
-            "value": "[variables('description')]"
+            "value": "[if(parameters('peer'), variables('trueDesc'), variables('falseDesc'))]"
         }
-
     }
 }

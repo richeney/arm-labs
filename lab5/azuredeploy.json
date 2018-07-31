@@ -91,7 +91,8 @@
         "imagePublisher": "Canonical",
         "imageOffer": "UbuntuServer",
         "storageAccountType": "Standard_LRS",
-        "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'salinuxvm')]"
+        "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'salinuxvm')]",
+        "vmId": "[resourceId('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
     },
     "resources": [
         {
@@ -221,5 +222,10 @@
             }
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "osDiskId": {
+            "type": "string",
+            "value": "[reference(variables('vmId')).storageProfile.osDisk.managedDisk.id]"
+        }
+    }
 }
